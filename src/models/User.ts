@@ -1,4 +1,4 @@
-import { prop, getModelForClass } from '@typegoose/typegoose'
+import {prop, getModelForClass, DocumentType} from '@typegoose/typegoose'
 
 export class User {
   @prop({ required: true, index: true, unique: true })
@@ -25,4 +25,8 @@ export async function findUser(id: number) {
     }
   }
   return user
+}
+
+export async function findAll(): Promise<DocumentType<User>[]> {
+  return await UserModel.find({})
 }
