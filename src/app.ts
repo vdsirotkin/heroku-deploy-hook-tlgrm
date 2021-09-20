@@ -3,7 +3,13 @@ import { localeActions } from './handlers/language'
 import 'module-alias/register'
 // Config dotenv
 import * as dotenv from 'dotenv'
-dotenv.config({ path: `${__dirname}/../.env` })
+import * as expand from "dotenv-expand";
+if (process.env.ENV == 'production') {
+  const config = dotenv.config({ path: `${__dirname}/../.env.production` })
+  expand(config)
+} else {
+  dotenv.config({ path: `${__dirname}/../.env` })
+}
 // Dependencies
 import { bot } from '@/helpers/bot'
 import { ignoreOldMessageUpdates } from '@/middlewares/ignoreOldMessageUpdates'
@@ -59,5 +65,8 @@ export interface HerokuPush {
 }
 
 //app=secure-woodland-9775&user=example%40example.com&url=http%3A%2F%2Fsecure-woodland-9775.herokuapp.com&head=4f20bdd&head_long=4f20bdd&prev_head=&git_log=%20%20*%20Michael%20Friis%3A%20add%20bar&release=v7
-
-app.listen(8080, () => console.log('started web server'))
+let port
+if (process.env.PORT) {
+  port = process.env.PORT
+} else port = 8080
+app.listen(port, () => console.log('started web server'))
