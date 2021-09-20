@@ -8,8 +8,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "distribute": "yarn build-ts && node dist/app.js",
+    "distribute": "node dist/app.js",
     "develop": "concurrently -k -i -p \"[{name}]\" -n \"Node,TypeScript\" -c \"yellow.bold,cyan.bold\" \"yarn watch-js\" \"yarn watch-ts\"",
+    "build": "tsc --skipLibCheck",
     "build-ts": "tsc --skipLibCheck",
     "watch-ts": "tsc -w --skipLibCheck",
     "watch-js": "nodemon dist/app.js"

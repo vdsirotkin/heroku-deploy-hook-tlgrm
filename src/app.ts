@@ -41,14 +41,18 @@ bot.launch().then(() => {
 const app = express()
 app.use(bodyParser.urlencoded({extended: true}))
 app.post("/hook", async (req: HerokuPushRequest, res) => {
-  console.log(req.body)
   try {
-    await sendNotification(bot, req.body)
-    res.status(200).end()
+    if ('body' in req) {
+      await sendNotification(bot, req.body)
+      res.status(200).end()
+      return
+    }
+    res.status(500).end()
   } catch (e) {
     console.log(e)
     res.status(500).end()
   }
+  return
 })
 
 interface HerokuPushRequest extends express.Request<{}, {}, HerokuPush> {}
